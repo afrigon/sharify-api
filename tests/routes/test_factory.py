@@ -3,6 +3,6 @@
 from app.routes import RouterFactory
 
 
-def test_whenCreatingRouter_thenDefaultRouteIsRegistered(app):
+def test_whenCreatingRouter_thenTranslationRouteIsRegistered(app):
     router = RouterFactory().create()
-    assert 'default' in router.routes
+    assert 'translation' in router.routes

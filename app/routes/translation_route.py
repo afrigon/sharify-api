@@ -40,5 +40,3 @@ class TranslationRoute(Route):
 
         track.url = url
         return track
-
-

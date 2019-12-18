@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+SPOTIFY_TRACK_ID = '6voo8x5qmBvabjEOxPHesp'
 
-def test_whenGettingRoot_thenReturnsHelloWorld(client):
-    r = client.get('/')
-    data = r.json()
+APPLE_MUSIC_TRACK_ID = '1490944380'
 
-    assert data == "Hello World!"
+
+def test_whenTranslatingFromSpotifyToApple_thenReturnsCorrectValues(client):
+    pass

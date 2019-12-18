@@ -7,6 +7,8 @@ PYTHON := python
 LINTER := flake8
 TEST_RUNNER := pytest
 
+LINTER_FLAGS := --max-line-length=120 --show-source --statistics
+
 SERVER := uvicorn
 SERVER_FLAGS := --host $(HOST) --port $(PORT) --reload --header server:sharify
 
@@ -19,9 +21,9 @@ run:
 
 lint: lint-app lint-test
 lint-app:
-	$(LINTER) app --show-source --statistics
+	$(LINTER) app $(LINTER_FLAGS)
 lint-test:
-	$(LINTER) tests --show-source --statistics
+	$(LINTER) tests $(LINTER_FLAGS)
 
 test:
 	$(PYTHON) -m $(TEST_RUNNER) -v
