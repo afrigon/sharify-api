@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import os
+from dotenv import load_dotenv
 from app import ApplicationFactory
 
-title = 'API'
-description = ''
-debug = os.environ.get('APP_DEBUG') or False
+load_dotenv()
 
-app = ApplicationFactory(title, description).create(debug=debug)
+with open('./AppleMusicAuthKey.p8', 'r') as f:
+    os.environ['APPLE_KEY'] = f.read()
+
+TITLE = 'Sharify'
+DESCRIPTION = ''
+DEBUG = os.environ.get('APP_DEBUG') or False
+
+app = ApplicationFactory(TITLE, DESCRIPTION).create(debug=DEBUG)

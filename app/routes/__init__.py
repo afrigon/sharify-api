@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+from .translation_route import TranslationRoute  # noqa: F401
+
 from .router import Router  # noqa: F401
 from .factory import RouterFactory  # noqa: F401
-
-from .default_route import DefaultRoute  # noqa: F401

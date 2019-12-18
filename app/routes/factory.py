@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from . import Router
-from .default_route import DefaultRoute
-from ..services import DefaultService
+from . import TranslationRoute
+from ..services import TranslationService
+from ..platforms import PlatformFactory
 
 
 class RouterFactory:
     def create(self):
-        default = DefaultRoute(DefaultService())
+        translation = TranslationRoute(TranslationService(PlatformFactory()))
 
-        return Router(default)
+        return Router(translation)

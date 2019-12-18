@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+
+from ..platforms import PlatformType, SpotifyPlatform, AppleMusicPlatform
+
+
+class PlatformFactory:
+    def create(self, type: PlatformType):
+        if type == PlatformType.SPOTIFY:
+            return SpotifyPlatform()
+        elif type == PlatformType.APPLE_MUSIC:
+            return AppleMusicPlatform()

@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from .default import DefaultService  # noqa: F401
+from .translation import TranslationService  # noqa: F401
