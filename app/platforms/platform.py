@@ -3,15 +3,13 @@
 import abc
 import functools
 from ..utils.date import now
+from ..utils import Singleton
 
 
-class Platform:  # pragma: no cover
+class Platform(Singleton):  # pragma: no cover
     def __init__(self):
         self.access_token = None
         self.expires_at = 0
-
-    def _get_access_token(self):
-        return None
 
     def _authenticate(self):
         self.access_token, self.expires_at = self._get_access_token()
@@ -31,6 +29,10 @@ class Platform:  # pragma: no cover
             return f(self, *args, **kwargs)
 
         return wrapper
+
+    @abc.abstractmethod
+    def _get_access_token(self):
+        return None
 
     @abc.abstractmethod
     def get_track(self, track_id: str):

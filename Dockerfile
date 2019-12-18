@@ -8,6 +8,6 @@ WORKDIR /app
 COPY ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-COPY ./main.py ./
+COPY ./main.py .env AppleMusicAuthKey.p8 ./
 COPY ./app /app/app
 
