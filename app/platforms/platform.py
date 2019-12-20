@@ -2,16 +2,27 @@
 
 import abc
 import functools
+from threading import Lock
 from ..utils.date import now
 from ..utils import Singleton
 
 
 class Platform(Singleton):  # pragma: no cover
     def __init__(self):
+        self.authentification_lock = Lock()
         self.access_token = None
         self.expires_at = 0
 
+    def _is_authenticated(self):
+        return self.access_token is not None and self.expires_at >= now(30)
+
     def _authenticate(self):
+        self.authentification_lock.acquire()
+
+        # if access_token was refreshed by another thread, return
+        if self._is_authenticated:
+            return
+
         self.access_token, self.expires_at = self._get_access_token()
 
         headers = {} if self.access_token is None else {
@@ -20,10 +31,12 @@ class Platform(Singleton):  # pragma: no cover
 
         self.session.headers.update(headers)
 
+        self.authentification_lock.release()
+
     def _authenticated(f):
         @functools.wraps(f)
         def wrapper(self, *args, **kwargs):
-            if self.access_token is None or self.expires_at < now(30):
+            if not self._is_authenticated:
                 self._authenticate()
 
             return f(self, *args, **kwargs)

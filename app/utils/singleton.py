@@ -3,7 +3,7 @@
 import threading
 
 
-class Singleton(object):
+class SingletonThreadSafe(object):
     __singleton_lock = threading.Lock()
     __singleton_instance = None
 
@@ -13,4 +13,13 @@ class Singleton(object):
             with cls.__singleton_lock:
                 if not cls.__singleton_instance:
                     cls.__singleton_instance = cls()
+        return cls.__singleton_instance
+
+class Singleton(object):
+    __singleton_instance = None
+
+    @classmethod
+    def instance(cls):
+        if not cls.__singleton_instance:
+            cls.__singleton_instance = cls()
         return cls.__singleton_instance
