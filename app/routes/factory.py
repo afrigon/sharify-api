@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from . import Router
-from . import TranslationRoute
-from ..services import TranslationService
+from . import TranslationRoute, HealthRoute
+from ..services import TranslationService, HealthService
 from ..platforms import PlatformFactory
 
 
 class RouterFactory:
     def create(self):
-        translation = TranslationRoute(TranslationService(PlatformFactory()))
+        platformFactory = PlatformFactory()
 
-        return Router(translation)
+        translation = TranslationRoute(TranslationService(platformFactory))
+        health = HealthRoute(HealthService(platformFactory))
+
+        return Router(translation, health)

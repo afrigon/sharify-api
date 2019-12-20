@@ -5,6 +5,7 @@ import jwt
 from .platform import Platform
 from ..track import Track
 from ..utils.date import now
+from ..errors import ErrorType
 
 VERSION = 'v1'
 REGION = 'us'
@@ -63,8 +64,11 @@ class AppleMusicPlatform(Platform):
                           image_url)
             track.add_id(track_id, 'apple-music')
 
+            self._update_status(r.status_code)
+
             return track
         except Exception:
+            self._update_status(ErrorType.PARSING)
             return None
 
     @Platform._authenticated
@@ -80,6 +84,12 @@ class AppleMusicPlatform(Platform):
 
         try:
             data = r.json()
-            return data['data'][0]['attributes']['url']
+
+            url = data['data'][0]['attributes']['url']
+
+            self._update_status(r.status_code)
+
+            return url
         except Exception:
+            self._update_status(ErrorType.PARSING)
             return None

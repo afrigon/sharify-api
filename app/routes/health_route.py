@@ -12,10 +12,10 @@ class HealthRoute(Route):
 
     def register(self, app):
         app.add_api_route('/health',
-                          self.get,
+                          self.status,
                           methods=['GET'],
                           name='health',
                           tags=['Monitoring'])
 
-    def get(self, track_id: str, source: str, destination: str):
-        pass
+    def status(self):
+        return self.service.status()

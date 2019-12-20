@@ -5,6 +5,7 @@ from base64 import b64encode
 from .platform import Platform
 from ..track import Track
 from ..utils.date import now
+from ..errors import ErrorType
 
 AUTH_URL = 'https://accounts.spotify.com/api/token'
 VERSION = 'v1'
@@ -63,8 +64,11 @@ class SpotifyPlatform(Platform):
                           image_url)
             track.add_id(track_id, 'spotify')
 
+            self._update_status(r.status_code)
+
             return track
         except Exception:
+            self._update_status(ErrorType.PARSING)
             return None
 
     @Platform._authenticated
@@ -87,6 +91,11 @@ class SpotifyPlatform(Platform):
             if len(tracks) != 1:
                 return None
 
-            return tracks[0]['external_urls']['spotify']
+            url = tracks[0]['external_urls']['spotify']
+
+            self._update_status(r.status_code)
+
+            return url
         except Exception:
+            self._update_status(ErrorType.PARSING)
             return None
