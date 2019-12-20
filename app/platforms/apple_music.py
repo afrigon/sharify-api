@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import os
 import jwt
 from .platform import Platform
@@ -17,7 +16,6 @@ IMG_SIZE = 640
 class AppleMusicPlatform(Platform):
     def __init__(self):
         Platform.__init__(self)
-        self.session = requests.Session()
         self.kid = os.environ['APPLE_KID']
         self.team_id = os.environ['APPLE_TEAM_ID']
         self.key = os.environ['APPLE_KEY']

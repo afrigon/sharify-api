@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import os
 from base64 import b64encode
 from .platform import Platform
@@ -15,7 +14,6 @@ HOST = f'https://api.spotify.com/{VERSION}'
 class SpotifyPlatform(Platform):
     def __init__(self):
         Platform.__init__(self)
-        self.session = requests.Session()
         self.client_id = os.environ['SPOTIFY_CLIENT_ID']
         self.client_secret = os.environ['SPOTIFY_CLIENT_SECRET']
 
