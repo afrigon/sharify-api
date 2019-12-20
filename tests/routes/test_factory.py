@@ -10,4 +10,4 @@ def test_whenCreatingRouter_thenTranslationRouteIsRegistered(app):
 
 def test_whenCreatingRouter_thenHealthRouteIsRegistered(app):
     router = RouterFactory().create()
-    assert 'translation' in router.routes
+    assert 'health' in router.routes
