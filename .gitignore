@@ -1,5 +1,6 @@
 .DS_Store
 *.p8
+.data
 
 .env
 venv/
