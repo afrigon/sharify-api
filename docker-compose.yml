@@ -8,6 +8,7 @@ services:
             - 8500:80
         networks:
             - internal
+            - reverse_proxy
 
     cache:
         image: redis:4
@@ -21,4 +22,6 @@ services:
 networks:
     internal:
         internal: true
+    reverse_proxy:
+        external: true
 
