@@ -15,6 +15,7 @@ class SingletonThreadSafe(object):
                     cls.__singleton_instance = cls()
         return cls.__singleton_instance
 
+
 class Singleton(object):
     __singleton_instance = None
 

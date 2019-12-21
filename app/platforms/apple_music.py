@@ -68,7 +68,7 @@ class AppleMusicPlatform(Platform):
 
             return track
         except Exception:
-            self._update_status(ErrorType.PARSING)
+            self._update_status(ErrorType.PARSING.value)
             return None
 
     @Platform._authenticated
@@ -91,5 +91,5 @@ class AppleMusicPlatform(Platform):
 
             return url
         except Exception:
-            self._update_status(ErrorType.PARSING)
+            self._update_status(ErrorType.PARSING.value)
             return None

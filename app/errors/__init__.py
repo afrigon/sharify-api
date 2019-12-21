@@ -4,5 +4,6 @@ from enum import Enum
 
 
 class ErrorType(Enum):
-    TROTTLED = 428
+    THROTTLED = 428
     PARSING = 1000
+    AUTH_REFRESH = 1001

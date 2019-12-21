@@ -30,10 +30,10 @@ class Platform(Singleton):  # pragma: no cover
         return self._status
 
     def _update_status(self, status_code):
-        if status_code == ErrorType.THROTTLED:
+        if status_code == ErrorType.THROTTLED.value:
             self._status = 'trottled'
         elif status_code >= 400:
-            self._status = f'unavailable (status_code)'
+            self._status = f'unavailable ({status_code})'
         else:
             self._status = 'available'
 
@@ -59,7 +59,7 @@ class Platform(Singleton):  # pragma: no cover
     def _authenticated(f):
         @functools.wraps(f)
         def wrapper(self, *args, **kwargs):
-            if not self._is_authenticated:
+            if not self._is_authenticated():
                 self._authenticate()
 
             return f(self, *args, **kwargs)

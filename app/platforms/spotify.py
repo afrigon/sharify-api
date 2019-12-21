@@ -37,6 +37,7 @@ class SpotifyPlatform(Platform):
 
             return token, expires_at
         except Exception:
+            self._update_status(ErrorType.AUTH_REFRESH.value)
             return None, 0
 
     @Platform._authenticated
@@ -68,7 +69,8 @@ class SpotifyPlatform(Platform):
 
             return track
         except Exception:
-            self._update_status(ErrorType.PARSING)
+            print(r.text)
+            self._update_status(ErrorType.PARSING.value)
             return None
 
     @Platform._authenticated
@@ -97,5 +99,5 @@ class SpotifyPlatform(Platform):
 
             return url
         except Exception:
-            self._update_status(ErrorType.PARSING)
+            self._update_status(ErrorType.PARSING.value)
             return None
