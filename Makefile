@@ -13,7 +13,7 @@ SERVER := uvicorn
 SERVER_FLAGS := --host $(HOST) --port $(PORT) --reload --header server:sharify
 
 RM := rm -rf
-TEMP_FILES := instance htmlcov .coverage .pytest_cache, *.egg-info
+TEMP_FILES := instance htmlcov .coverage .pytest_cache *.egg-info
 
 all: test lint run
 run:
