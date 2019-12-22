@@ -1,27 +1,26 @@
 version: "3.7"
 
 services:
-    sharify:
-        build: .
-        restart: always
-        ports:
-            - 8500:80
-        networks:
-            - internal
-            - reverse_proxy
+  sharify:
+    build: .
+    restart: always
+    ports:
+      - 8500:80
+    networks:
+      default:
+      internal:
 
-    cache:
-        image: redis:4
-        restart: always
-        volumes:
-            - .data/redis:/data
-
-        networks:
-            - internal
+  cache:
+    image: redis:4
+    restart: always
+    volumes:
+      - .data/redis:/data
+    networks:
+      internal:
 
 networks:
-    internal:
-        internal: true
-    reverse_proxy:
-        external: true
+  internal:
+    internal: true
+  reverse_proxy:
+    external: true
 
