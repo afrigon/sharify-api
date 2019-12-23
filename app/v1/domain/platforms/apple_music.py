@@ -3,9 +3,11 @@
 import os
 import jwt
 from .platform import Platform
-from ..track import Track
-from ..utils.date import now
-from ..errors import ErrorType
+from ....utils.date import now
+from .errors import PlatformErrorType
+from ..link_type import LinkType
+from ..types import Track
+from .types import PlatformType
 
 VERSION = 'v1'
 REGION = 'us'
@@ -51,28 +53,26 @@ class AppleMusicPlatform(Platform):
             data = data['data'][0]['attributes']
 
             title = data['name']
-            author = data['artistName']
             album = data['albumName']
+            artist = data['artistName']
             isrc = data['isrc']
             image_url = data['artwork']['url']
             image_url = image_url.replace('{w}x{h}', f'{IMG_SIZE}x{IMG_SIZE}')
+            audio_url = data['previews'][0]['url']
+            url = data['url']
 
-            track = Track(title,
-                          author,
-                          album,
-                          isrc,
-                          image_url)
-            track.add_id(track_id, 'apple-music')
+            track = Track(isrc, title, album, artist, image_url, audio_url)
+            track.add_external(PlatformType.APPLE_MUSIC, track_id, url)
 
             self._update_status(r.status_code)
 
             return track
         except Exception:
-            self._update_status(ErrorType.PARSING.value)
+            self._update_status(PlatformErrorType.PARSING.value)
             return None
 
     @Platform._authenticated
-    def get_url(self, isrc: str):
+    def get_external(self, isrc: str, link_type: LinkType = LinkType.TRACK):
         if isrc is None:
             return None
 
@@ -84,12 +84,16 @@ class AppleMusicPlatform(Platform):
 
         try:
             data = r.json()
+            data = data['data'][0]
 
-            url = data['data'][0]['attributes']['url']
+            external = {
+                'item_id': data['id'],
+                'url': data['attributes']['url']
+            }
 
             self._update_status(r.status_code)
 
-            return url
+            return external
         except Exception:
-            self._update_status(ErrorType.PARSING.value)
+            self._update_status(PlatformErrorType.PARSING.value)
             return None

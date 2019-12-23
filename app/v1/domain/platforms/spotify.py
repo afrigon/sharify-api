@@ -3,9 +3,11 @@
 import os
 from base64 import b64encode
 from .platform import Platform
-from ..track import Track
-from ..utils.date import now
-from ..errors import ErrorType
+from ....utils.date import now
+from .errors import PlatformErrorType
+from ...domain.types import Track
+from .types import PlatformType
+from ..link_type import LinkType
 
 AUTH_URL = 'https://accounts.spotify.com/api/token'
 VERSION = 'v1'
@@ -37,7 +39,7 @@ class SpotifyPlatform(Platform):
 
             return token, expires_at
         except Exception:
-            self._update_status(ErrorType.AUTH_REFRESH.value)
+            self._update_status(PlatformErrorType.AUTH_REFRESH.value)
             return None, 0
 
     @Platform._authenticated
@@ -48,9 +50,11 @@ class SpotifyPlatform(Platform):
             data = r.json()
 
             title = data['name']
-            author = data['artists'][0]['name']
             album = data['album']['name']
+            artist = data['artists'][0]['name']
             isrc = data['external_ids']['isrc']
+            audio_url = data['preview_url']
+            url = data['external_urls']['spotify']
 
             images = data['album']['images']
             for image in images:
@@ -58,23 +62,19 @@ class SpotifyPlatform(Platform):
                     image_url = image['url']
             image_url = image_url or images[0]['url']
 
-            track = Track(title,
-                          author,
-                          album,
-                          isrc,
-                          image_url)
-            track.add_id(track_id, 'spotify')
+            track = Track(isrc, title, album, artist, image_url, audio_url)
+            track.add_external(PlatformType.SPOTIFY, track_id, url)
 
             self._update_status(r.status_code)
 
             return track
-        except Exception:
-            print(r.text)
-            self._update_status(ErrorType.PARSING.value)
+        except Exception as e:
+            print(e)
+            self._update_status(PlatformErrorType.PARSING.value)
             return None
 
     @Platform._authenticated
-    def get_url(self, isrc: str):
+    def get_external(self, isrc: str, link_type: LinkType = LinkType.TRACK):
         if isrc is None:
             return None
 
@@ -93,11 +93,14 @@ class SpotifyPlatform(Platform):
             if len(tracks) != 1:
                 return None
 
-            url = tracks[0]['external_urls']['spotify']
+            external = {
+                'item_id': tracks[0]['id'],
+                'url': tracks[0]['external_urls']['spotify']
+            }
 
             self._update_status(r.status_code)
 
-            return url
+            return external
         except Exception:
-            self._update_status(ErrorType.PARSING.value)
+            self._update_status(PlatformErrorType.PARSING.value)
             return None

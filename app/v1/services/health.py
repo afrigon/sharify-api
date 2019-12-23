@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from ..platforms import PlatformFactory, PlatformType
+from ..domain.platforms import PlatformFactory, PlatformType
+from ..domain.types import Health
 
 
 class HealthService:
@@ -14,4 +15,4 @@ class HealthService:
             platform = self.platformFactory.create(type)
             status[type.value] = platform.status
 
-        return status
+        return Health(status=status)

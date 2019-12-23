@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from calendar import timegm
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 
 def now(leeway=0):
@@ -9,3 +9,7 @@ def now(leeway=0):
         leeway = leeway.total_seconds()
 
     return timegm(datetime.utcnow().utctimetuple()) + leeway
+
+
+def today():
+    return str(date.today())

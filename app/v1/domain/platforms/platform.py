@@ -4,9 +4,10 @@ import abc
 import functools
 import requests
 from threading import Lock
-from ..utils.date import now
-from ..utils import Singleton
-from ..errors import ErrorType
+from ....utils.date import now
+from ....utils import Singleton
+from .errors import PlatformErrorType
+from ..link_type import LinkType
 
 
 class Platform(Singleton):  # pragma: no cover
@@ -30,7 +31,7 @@ class Platform(Singleton):  # pragma: no cover
         return self._status
 
     def _update_status(self, status_code):
-        if status_code == ErrorType.THROTTLED.value:
+        if status_code == PlatformErrorType.THROTTLED.value:
             self._status = 'trottled'
         elif status_code >= 400:
             self._status = f'unavailable ({status_code})'
@@ -75,5 +76,5 @@ class Platform(Singleton):  # pragma: no cover
         return None
 
     @abc.abstractmethod
-    def get_url(self, isrc: str):
+    def get_external(self, isrc: str, link_type: LinkType = LinkType.TRACK):
         return None
