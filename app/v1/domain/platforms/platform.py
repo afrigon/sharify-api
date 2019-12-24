@@ -76,5 +76,13 @@ class Platform(Singleton):  # pragma: no cover
         return None
 
     @abc.abstractmethod
+    def get_album(self, album_id: str):
+        return None
+
+    @abc.abstractmethod
+    def get_artist(self, artist_id: str):
+        return None
+
+    @abc.abstractmethod
     def get_external(self, isrc: str, link_type: LinkType = LinkType.TRACK):
         return None

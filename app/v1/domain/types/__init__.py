@@ -4,4 +4,6 @@
 
 from .sharify_object import SharifyObject
 from .track import Track
+from .album import Album
+from .artist import Artist
 from .health import Health

@@ -7,6 +7,7 @@ from .domain.platforms import PlatformType
 from .domain.link_type import LinkType
 from .services import TranslationService, HealthService
 from .domain.platforms import PlatformFactory
+from .domain.errors import ItemNotFoundError
 
 router = APIRouter()
 
@@ -21,28 +22,17 @@ def translate(link_id: str,
               platform: PlatformType,
               target: PlatformType = None,
               sharify_version: str = Header(None)):
-
-    if target is None:
-        # fetch all
-        pass
-
-    # wrap this in a try except with domain errors, then throw actual httpexception from here
-    item = translationService.translate(link_id,
-                                        link_type,
-                                        platform,
-                                        target)
-
-    #if item is None:
-    #    raise HTTPException(404, f'{link_id} does not exist on the {platform.value} platform')
-
-    #if url is None:
-    #    raise HTTPException(404, f'Could not find matching ISRC on the {target.value} platform')
-
-    #item.url = url
+    try:
+        item = translationService.translate(link_id,
+                                            link_type,
+                                            platform,
+                                            target)
+    except ItemNotFoundError:
+        raise HTTPException(404, f'could not find {link_type.value} {link_id} on {platform.value}')
 
     return VersionChanges.instance().apply(item,
                                            until=sharify_version,
-                                           target=target.value)
+                                           target=target)
 
 
 @router.get('/health', tags=['Monitoring'])
