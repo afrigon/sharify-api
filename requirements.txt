@@ -5,3 +5,4 @@ pyjwt==1.7.1
 cryptography==2.8
 python-dotenv==0.10.3
 bs4==0.0.1
+redis==3.3.11
