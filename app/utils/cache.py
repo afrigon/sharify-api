@@ -21,6 +21,11 @@ class Cache(Singleton):
             print(f'could not connect to redis://{host}:{port}/0, disableling caching')
             self.enabled = False
 
+    def _make_key(key: str,
+                  platform: PlatformType,
+                  link_type: LinkType):
+        return f'/{platform.value}/{link_type.value}/{key}'
+
     def set(self,
             key: str,
             platform: PlatformType,
@@ -30,7 +35,7 @@ class Cache(Singleton):
             return
 
         try:
-            key = f'{platform.value}/{link_type.value}/{key}'
+            key = self._make_key(key, platform, link_type)
             pickled = pickle.dumps(obj)
             self.r.set(key, pickled)
         except Exception:
@@ -44,7 +49,7 @@ class Cache(Singleton):
             return None
 
         try:
-            key = f'{platform.value}/{link_type.value}/{key}'
+            key = self._make_key(key, platform, link_type)
             obj = self.r.get(key)
             return pickle.loads(obj)
         except Exception:

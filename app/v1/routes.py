@@ -5,15 +5,16 @@ from fastapi import Header, HTTPException
 from .versioning import VersionChanges
 from .domain.platforms import PlatformType
 from .domain.link_type import LinkType
-from .services import TranslationService, HealthService
+from .services import TranslationService, HealthService, ParsingService
 from .domain.platforms import PlatformFactory
-from .domain.errors import ItemNotFoundError
+from .domain.errors import ItemNotFoundError, InvalidURLError
 
 router = APIRouter()
 
 platformFactory = PlatformFactory()
 translationService = TranslationService(platformFactory)
 healthService = HealthService(platformFactory)
+parsingService = ParsingService()
 
 
 @router.get('/translate/{platform}/{link_type}/{link_id}')
@@ -35,10 +36,20 @@ def translate(link_id: str,
                                            target=target)
 
 
+@router.get('/parse', tags=['Parsing'])
+async def parse(url: str, sharify_version: str = Header(None)):
+    try:
+        query = parsingService.parse(url)
+    except InvalidURLError:
+        return HTTPException(404, 'could not parse url into a valid LinkQuery object')
+
+    return VersionChanges.instance().apply(query,
+                                           until=sharify_version)
+
+
 @router.get('/health', tags=['Monitoring'])
 async def health(sharify_version: str = Header(None)):
     status = healthService.status()
-    print(status)
 
     return VersionChanges.instance().apply(status,
                                            until=sharify_version)
