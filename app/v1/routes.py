@@ -17,7 +17,7 @@ healthService = HealthService(platformFactory)
 parsingService = ParsingService()
 
 
-@router.get('/translate/{platform}/{link_type}/{link_id}')
+@router.get('/translate/{platform}/{link_type}/{link_id}', tags=['Translation'])
 def translate(link_id: str,
               link_type: LinkType,
               platform: PlatformType,
@@ -30,6 +30,31 @@ def translate(link_id: str,
                                             target)
     except ItemNotFoundError:
         raise HTTPException(404, f'could not find {link_type.value} {link_id} on {platform.value}')
+
+    return VersionChanges.instance().apply(item,
+                                           until=sharify_version,
+                                           target=target)
+
+
+@router.get('/translate', tags=['Translation'])
+def parse_translate(url: str,
+                    target: PlatformType = None,
+                    sharify_version: str = Header(None)):
+    try:
+        query = parsingService.parse(url)
+    except InvalidURLError:
+        return HTTPException(404, 'could not parse url into a valid LinkQuery object')
+
+    link_type = LinkType(query.type)
+    platform = PlatformType(query.platform)
+
+    try:
+        item = translationService.translate(query.id,
+                                            link_type,
+                                            platform,
+                                            target)
+    except ItemNotFoundError:
+        raise HTTPException(404, f'could not find {query.type} {query.id} on {query.platform}')
 
     return VersionChanges.instance().apply(item,
                                            until=sharify_version,

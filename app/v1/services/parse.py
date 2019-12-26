@@ -10,7 +10,7 @@ from ..domain.link_type import LinkType
 class ParsingService:
     def parse(self, url: str):
         # spotify:track:6voo8x5qmBvabjEOxPHesp
-        m = re.search(r'spotify:(?P<link_type>album|track|artist):(?P<link_id>\w*)', url)
+        m = re.search(r'spotify:(//)?(?P<link_type>album|track|artist):(?P<link_id>\w*)', url)
         if m:
             return LinkQuery(m.group('link_id'),
                              m.group('link_type'),
