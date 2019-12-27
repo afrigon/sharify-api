@@ -12,7 +12,7 @@ from ....utils import get
 from bs4 import BeautifulSoup
 
 VERSION = 'v1'
-REGION = 'us'
+REGION = 'ca'
 HOST = f'https://api.music.apple.com/{VERSION}'
 TOKEN_TTL = 3600
 IMG_SIZE = 640

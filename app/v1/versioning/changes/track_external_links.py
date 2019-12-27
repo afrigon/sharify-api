@@ -6,7 +6,7 @@ from ...domain.types import Track
 
 class TrackExternalLinks(AbstractVersionChange):
     def description():
-        return ''
+        return 'urls are defined in an external object instead of a singular url field'
 
     def api_resource_type():
         return Track
