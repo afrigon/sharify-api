@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # flake8: noqa
 
 from .apple_music import AppleMusicPlatform

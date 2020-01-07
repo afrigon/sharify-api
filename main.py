@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 from dotenv import load_dotenv
 from app.utils.cache import Cache

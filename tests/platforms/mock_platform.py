@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from time import sleep
 from app.platforms.platform import Platform
 from app.utils.date import now

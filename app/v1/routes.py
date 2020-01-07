@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from fastapi.routing import APIRouter
 from fastapi import Header, HTTPException
 from .versioning import VersionChanges

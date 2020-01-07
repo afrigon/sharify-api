@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from abc import ABC, abstractmethod
 from ..domain.types import SharifyObject
 

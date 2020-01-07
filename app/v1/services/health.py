@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from ..domain.platforms import PlatformFactory, PlatformType
 from ..domain.types import Health
 

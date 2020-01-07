@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from ..abstract_version_change import AbstractVersionChange
 from ...domain.types import Track
 
