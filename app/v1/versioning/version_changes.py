@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from . import changes  # noqa: F401
 from ...utils.singleton import Singleton
 from ..domain.types import SharifyObject

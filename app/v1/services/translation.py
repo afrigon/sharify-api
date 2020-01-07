@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from ..domain.platforms import PlatformFactory, PlatformType
 from ..domain.link_type import LinkType
 from ..domain.errors import ItemNotFoundError

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import re
 from ..domain.errors import InvalidURLError
 from ..domain.types import LinkQuery

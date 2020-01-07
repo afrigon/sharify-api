@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 from base64 import b64encode
 from .platform import Platform
