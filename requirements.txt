@@ -1,7 +1,7 @@
 fastapi==0.45.0
 uvicorn==0.10.8
 requests==2.22.0
-pyjwt==1.7.1
+pyjwt==2.4.0
 cryptography==2.8
 python-dotenv==0.10.3
 bs4==0.0.1
